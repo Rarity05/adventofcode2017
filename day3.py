@@ -35,21 +35,20 @@ xs = [-1, 0, 1] * 3
 ys = [-1] * 3 + [0] * 3 + [1] * 3
 ranges = list(zip(xs, ys))
 
-while True:
+while matrix[currentPosition] < input:
     currentDirection = directions[currentDirectionIndex]
-    nextDirection = directions[(currentDirectionIndex + 1) % 4]
+    nextDirectionIndex = (currentDirectionIndex + 1) % 4
+    nextDirection = directions[nextDirectionIndex]
 
     if addTuple(currentPosition, nextDirection) not in matrix:
-        currentDirectionIndex = (currentDirectionIndex + 1) % 4
+        currentDirectionIndex = nextDirectionIndex
         currentDirection = nextDirection
     currentPosition = addTuple(currentPosition, currentDirection)
 
-    value = 0
-    for coordinate in ranges:
-        index = addTuple(currentPosition, coordinate)
-        value += matrix.get(index, 0)
+    indicies = [addTuple(currentPosition, coordinate) for coordinate in ranges]
+    values = list(map(lambda x: matrix.get(x, 0), indicies))
+
+    value = sum(values)
     matrix[currentPosition] = value
 
-    if value > input:
-        print("Part 2 result:", value)
-        break
+print("Part 2 result:", matrix[currentPosition])
